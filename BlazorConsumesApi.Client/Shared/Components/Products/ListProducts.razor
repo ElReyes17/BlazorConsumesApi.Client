@@ -1,5 +1,6 @@
 ﻿@using BlazorTest.Client.Models
-@rendermode InteractiveWebAssemblyRenderMode
+@inject NavigationManager NavigationManager
+
 @inject HttpClient http
 
 <h3>ListProducts</h3>
@@ -65,21 +66,22 @@
 
     public async Task<List<ProductsJson>> Get()
     {
-        try
-        {
 
-            lista = await http.GetFromJsonAsync<List<ProductsJson>>("api/Product/GetProducts");
+        lista = await http.GetFromJsonAsync<List<ProductsJson>>("api/Product/GetProducts");
 
-            return lista;
+        return lista;
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return null;
-        }
+    }
 
+     void Create()
+    {
+        NavigationManager.NavigateTo("edit-product");
 
+    }
+
+    public async Task Edit(int id)
+    {
+        NavigationManager.NavigateTo($"edit-product/{id}");
     }
 
     public async Task Delete(int id)
